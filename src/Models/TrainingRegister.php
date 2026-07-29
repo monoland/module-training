@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\DB;
 
 class TrainingRegister extends Model
 {
-    use Filterable,
-        HasMeta,
-        HasFeatures,
-        HasCollectionSetup,
-        Searchable,
-        SoftDeletes;
+    use Filterable;
+    use HasMeta;
+    use HasFeatures;
+    use HasCollectionSetup;
+    use Searchable;
+    use SoftDeletes;
 
     /**
      * The connection name for the model.
@@ -59,6 +59,22 @@ class TrainingRegister extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function pageResourceMap(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'updated_at' => (string) $model->updated_at,
+        ];
+    }
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -66,8 +82,8 @@ class TrainingRegister extends Model
      */
     public static function storeRecord(Request $request)
     {
-        $model = new static;
-        
+        $model = new static();
+
         DB::connection($model->connection)->beginTransaction();
 
         try {
